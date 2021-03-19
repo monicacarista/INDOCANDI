@@ -21,8 +21,10 @@ void main() => runApp(MaterialApp(
     'CandiNonKeagamaan': (context) => CandiNonKeagamaan(),
     'CandiWanua': (context) => CandiWanua(),
     'CandiDaerah': (context) => CandiDaerah(),
-    'CandiKerajaan' : (context) => CandiKerajaan(),
-    'CandiPribadi' : (context) => CandiPribadi(),
+    'CandiKerajaan': (context) => CandiKerajaan(),
+    'CandiPribadi': (context) => CandiDaerah(),
+
+
 
   },
   debugShowCheckedModeBanner: false,
@@ -65,48 +67,48 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 6,
-      child: Scaffold(
-      appBar: AppBar(
-        title: Text("INDOCANDI",
-          style: new TextStyle(
-              fontSize: 24.0, fontWeight: FontWeight.bold
-          ),),
-        backgroundColor: Colors.blue,
-        centerTitle: true,
+        length: 6,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("INDOCANDI",
+              style: new TextStyle(
+                  fontSize: 24.0, fontWeight: FontWeight.bold
+              ),),
+            backgroundColor: Colors.blue,
+            centerTitle: true,
 
-        bottom: new TabBar(
-            isScrollable: true,
-            // indicatorWeight: 10.0,
-            //indicatorColor: Colors.black,
-            // controller: controller,
-            tabs:<Widget>[
-              new Tab(text: "Candi Keagamaan"),
-              new Tab(text: "Candi Non Keagamaan",),
-              new Tab(text: "Candi Wanua",),
-              new Tab(text: "Candi Daerah",),
-              new Tab(text: "Candi Kerajaan",),
-              new Tab(text: "Candi Pribadi",),
-            ]
-        ),
+            bottom: new TabBar(
+                isScrollable: true,
+                // indicatorWeight: 10.0,
+                //indicatorColor: Colors.black,
+                // controller: controller,
+                tabs:<Widget>[
+                  new Tab(text: "Candi Keagamaan"),
+                  new Tab(text: "Candi Non Keagamaan",),
+                  new Tab(text: "Candi Wanua",),
+                  new Tab(text: "Candi Daerah",),
+                  new Tab(text: "Candi Kerajaan",),
+                  new Tab(text: "Candi Pribadi",),
+                ]
+            ),
 
-      ),
-     drawer: SideBar(),
-     // body: _buildBody(context),
-      body: TabBarView(children: [
-        CandiKeagamaan(),
-        CandiNonKeagamaan(),
-        CandiWanua(),
-        CandiDaerah(),
-        CandiKerajaan(),
-        CandiPribadi(),
-      ],),
+          ),
+          drawer: SideBar(),
+          // body: _buildBody(context),
+          body: TabBarView(children: [
+            CandiKeagamaan(),
+            CandiNonKeagamaan(),
+            CandiWanua(),
+            CandiDaerah(),
+            CandiKerajaan(),
+            CandiPribadi(),
+          ],),
 
-      )
+        )
     );
   }
 
 
-  }
+}
 
 
