@@ -40,49 +40,29 @@ class SideBar extends StatelessWidget {
                 ),
               ),
               ListTile(
-                title: Text('CandiKeagamaan'),
+                title: Text('About Us'),
 
                 onTap: () => Navigator.pushReplacementNamed(
                   context,
-                  'CandiKeagamaan',
+                  'About',
                 ),
               ),
               ListTile(
-                title: Text('CandiNonKeagamaan'),
+                title: Text('Info'),
 
-                onTap: () => Navigator.pushNamed(
+                onTap: () => Navigator.pushReplacementNamed(
                   context,
-                  'CandiNonKeagamaan',
+                  'Info',
                 ),
               ),
               ListTile(
-                title: Text('CandiWanua'),
-                onTap: () => Navigator.pushNamed(
+                title: Text('Map'),
+
+                onTap: () => Navigator.pushReplacementNamed(
                   context,
-                  'CandiWanua',
+                  'Map',
                 ),
               ),
-              ListTile(
-                title: Text('CandiDaerah'),
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  'CandiDaerah',
-                ),
-              ),
-                ListTile(
-                  title: Text('Candi Kerajaan'),
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    'CandiKerajaan',
-                  ),
-                ),
-                  ListTile(
-                    title: Text('Candi Pribadi'),
-                    onTap: () => Navigator.pushNamed(
-                      context,
-                      'CandiPribadi',
-                    ),
-              )
             ],
           ),
         ),

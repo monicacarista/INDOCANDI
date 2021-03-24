@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_tes/CandiDaerah.dart';
 import 'package:flutter_tes/CandiNonKeagamaan.dart';
+import 'package:flutter_tes/CandiPribadi.dart';
 import 'package:flutter_tes/CandiWanua.dart';
 import 'package:flutter_tes/splashscreen_view.dart';
 import 'package:http/http.dart'as http;
@@ -10,6 +11,8 @@ import 'dart:convert';
 import 'package:flutter_tes/list_item.dart';
 import 'package:flutter_tes/Tab/SideBar.dart';
 import 'package:flutter_tes/Tab/TabBar.dart';
+
+import 'CandiKerajaan.dart';
 
 class CandiKeagamaan extends StatefulWidget {
   @override
@@ -51,7 +54,7 @@ class _candikeagamaan extends State<CandiKeagamaan> with SingleTickerProviderSta
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 4,
+        length: 6,
         child: Scaffold(
           // appBar: AppBar(
           //   title: Text("INDOCANDI",
@@ -75,15 +78,22 @@ class _candikeagamaan extends State<CandiKeagamaan> with SingleTickerProviderSta
             // ),
 
         // ),
-          drawer: SideBar(),
+         drawer: SideBar(),
         //drawer: TabBar(),
-         body: _buildBody(context),
-         //  body: TabBarView(children: [
-         //    CandiKeagamaan(),
-         //    CandiNonKeagamaan(),
-         //    CandiWanua(),
-         //    CandiDaerah(),
-         //  ],),
+        //  body: Column(
+        //    children: <Widget>[
+        //      _buildBody(context),
+        //     // TabBarView(children: [
+        //     //    CandiKeagamaan(),
+        //     //    CandiNonKeagamaan(),
+        //     //    CandiWanua(),
+        //     //    CandiDaerah(),
+        //     //    CandiKerajaan(),
+        //     //    CandiPribadi(),
+        //     //  ],),
+        //    ],
+        //  )
+          body: _buildBody(context),
 
         )
     );

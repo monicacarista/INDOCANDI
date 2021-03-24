@@ -13,6 +13,9 @@ import 'package:flutter_tes/list_item.dart';
 import 'package:flutter_tes/CandiKeagamaan.dart';
 import 'package:flutter_tes/CandiKerajaan.dart';
 import 'package:flutter_tes/CandiPribadi.dart';
+import 'package:flutter_tes/Info.dart';
+import 'package:flutter_tes/About.dart';
+
 void main() => runApp(MaterialApp(
   initialRoute: '/',
   routes: {
@@ -23,6 +26,8 @@ void main() => runApp(MaterialApp(
     'CandiDaerah': (context) => CandiDaerah(),
     'CandiKerajaan' : (context) => CandiKerajaan(),
     'CandiPribadi' : (context) => CandiPribadi(),
+    'About' : (context) => About(),
+
 
   },
   debugShowCheckedModeBanner: false,
