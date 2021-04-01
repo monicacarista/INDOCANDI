@@ -42,7 +42,7 @@ class SideBar extends StatelessWidget {
               ListTile(
                 title: Text('About Us'),
 
-                onTap: () => Navigator.pushReplacementNamed(
+                onTap: () => Navigator.pushNamed(
                   context,
                   'About',
                 ),
@@ -50,7 +50,7 @@ class SideBar extends StatelessWidget {
               ListTile(
                 title: Text('Info'),
 
-                onTap: () => Navigator.pushReplacementNamed(
+                onTap: () => Navigator.pushNamed(
                   context,
                   'Info',
                 ),
@@ -58,7 +58,7 @@ class SideBar extends StatelessWidget {
               ListTile(
                 title: Text('Map'),
 
-                onTap: () => Navigator.pushReplacementNamed(
+                onTap: () => Navigator.pushNamed(
                   context,
                   'Map',
                 ),

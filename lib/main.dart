@@ -27,7 +27,7 @@ void main() => runApp(MaterialApp(
     'CandiKerajaan' : (context) => CandiKerajaan(),
     'CandiPribadi' : (context) => CandiPribadi(),
     'About' : (context) => About(),
-
+    'Info' : (context) => Info(),
 
   },
   debugShowCheckedModeBanner: false,
