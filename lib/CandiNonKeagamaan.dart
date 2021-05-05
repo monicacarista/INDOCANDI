@@ -18,7 +18,7 @@ class CandiNonKeagamaan extends StatefulWidget{
 
 class _CandiNonKeagamaan extends State {
 
-  Future<List<Tripleset>> main1() async {
+  Future<List<Tripleset>> mainKerajaan() async {
     var payload = Uri.encodeComponent("prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
         "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
         "prefix : <http://alunalun.info/ontology/candi#> "+
@@ -47,88 +47,95 @@ class _CandiNonKeagamaan extends State {
 
   }
 
-    @override
-    void initState() {
-      super.initState();
-      main1();
-    }
-    @override
-    Widget build(BuildContext context) {
-      return  Scaffold(
-        appBar: AppBar(
-          title: Text('Flutter ListView'),
-        ),
-        body: Center(
-          child: FutureBuilder <List<Tripleset>>(
-            future: main1(),
-            builder: (context, AsyncSnapshot snapshot) {
-              //  print(snapshot.data);
-              if (snapshot.data == null) {
-                return Container(
-                  child: Center(
-                    child: Text("Loadinggggggggggggggggggggggggggggggggg"),
-                  ),
-                );
-              } else {
-                return
-                  ListView.builder(
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                          margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                          shadowColor: Color(0xFFBA68c8),
-                          elevation: 2.0,
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                            child: Container(
-                              padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
-                              margin: EdgeInsets.fromLTRB(3, 3, 3, 3),
-                              child: ListTile(
-                                title: Text(
-                                    snapshot.data[index].candi.value,
-                                    style: TextStyle(
-                                    color: Color(0xFFA848BC),
-                                      fontWeight: FontWeight.bold,
-                                ),
-                                ),
-                                subtitle: Text(snapshot.data[index].lokasi.value),
-                                leading: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: Image.network(
-                                  snapshot.data[index].gambar.value,
-                               //     data['urlToImage'] ?? 'https://via.placeholder.com/400x200',
-                                  // "assets/images/borobudur.jpg",
+  @override
+  void initState() {
+    super.initState();
+    mainKerajaan();
+  }
 
-                                  width: 200,
-                                  height: 200,
-                                  ),
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Flutter ListView'),
+      ),
+      body: Center(
+        child: FutureBuilder <List<Tripleset>>(
+          future: mainKerajaan(),
+          builder: (context, AsyncSnapshot snapshot){
+            if (snapshot.data == null) {
+              return Container(
+                child: Center(
+                  child: Text("Loadinggggggggggggggggggggggggggggggggg"),
+                ),
+              );
+            } else{
+              return
+                ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return new Card(
+                        elevation: 2.0,
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(16.0),
+                        ),
+                        child: new InkWell(
+                          child: new Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new ClipRRect(
+                                child: new Image.network(
+                                    // "assets/images/borobudur.jpg",
+                                    "snapshot.data[index].gambar.value"
                                 ),
-                                trailing: IconButton(
-                                  icon: Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    color: Colors.black26,
-                                    size: 20,
-                                  ),
-                                  onPressed: (){
-                                    //detail candi
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context)=> UserViewModel())
-                                    );
-                                  },
+                                borderRadius: BorderRadius.only(
+                                  topLeft: new Radius.circular(16.0),
+                                  topRight: new Radius.circular(16.0),
+                                ),
+
+                              ),
+
+                              new Padding(
+                                padding: new EdgeInsets.all(16.0),
+                                child: new Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    new Text(snapshot.data[index].candi.value),
+                                    new SizedBox(height: 16.0),
+                                    new Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        new Text(snapshot.data[index].lokasi.value),
+                                        //  new Text(data['source']['name']),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
-                        ),
-                            );
-                      }
-                  );
-              }
-            },
-          ),
-        ),
+                            ],
+                          ),
 
-      );
+                          // onTap: () {
+                          //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(data: this.data)));
+                          // },
+                        ),
+                      );
+                    }
+                );
+
+
+
+
+
+            }
+
+          },
+        ),
+      ),
+    );
   }
+
 }

@@ -70,6 +70,23 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
     super.dispose();
   }
 
+  final List Kategori = [
+    "Candi Non Keagamaan",
+    "Candi Keagamaan",
+    "Candi Kerajaan ",
+    "Candi Pribadi",
+    "Candi Wanua",
+    "Candi Daerah",
+  ];
+  final List Gambar = [
+        "assets/images/CandiAbang.jpg",
+        "assets/images/CandiAngin.jpg",
+        "assets/images/borobudur.jpg",
+        "assets/images/CandiBajangRatu.jpg",
+        "assets/images/CandiCungkup.jpg",
+        "assets/images/CandiGunungKawi.jpg",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -86,40 +103,59 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
 
       ),
      drawer: SideBar(),
-          body:Container(
-              child: new Center(
-                  child: new Column(
-                      children: <Widget>[
-
-                        new Image.asset(
-                          "assets/images/logo.png",
-                          width: 200.0,
-                          height: 200.0,
-                        ),
-                        new RichText(
-                          text: TextSpan(
-                              style: TextStyle(color: Colors.black, fontSize: 18),
-                              children: <TextSpan>[
-                                //TextSpan(text: " Color", style: TextStyle(color: Colors.blue)),
-                                TextSpan(text: " Proyek bernama alun-alun merupakan proyek penelitianyang didanai oleh Dana Pribadi (2019), RISTEKDIKTI tahun 2018 dan LPPM UKDW tahun 2019. Penelitian ini fokus pada pengembangan model untuk beberapa objek budaya Indonesia, antara lain: Batik, Rumah, Candi, Makanan Tradisional, Upacara, Pakaian, dan Sastra. ", style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500, letterSpacing: 1.0,height: 1.7 ))
-                              ]
+        body: Center(
+          child: ListView.builder(
+              itemCount: Gambar.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return new Card(
+                          elevation: 2.0,
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(16.0),
                           ),
-                          textWidthBasis: TextWidthBasis.longestLine,
-                        ),
-                      ]
+                          child: new InkWell(
+                            child: new Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                new ClipRRect(
+                                  child: new Image.asset(
+                                    Gambar[index]
+                                  ),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: new Radius.circular(16.0),
+                                    topRight: new Radius.circular(16.0),
+                                  ),
+                                ),
+                                new Padding(
+                                  padding: new EdgeInsets.all(16.0),
+                                  child: new Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      new Text(Kategori[index],
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),),
+                                      new SizedBox(height: 16.0),
 
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // onTap: () {
+                            //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(data: this.data)));
+                            // },
+                          ),
+                        );
+                      }
                   )
-
-
-              )
-
-
-          )
-      )
+    )
+    )
     );
-  }
-
-
+              }
   }
 
 
