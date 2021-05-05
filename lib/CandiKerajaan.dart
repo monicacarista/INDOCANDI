@@ -51,13 +51,13 @@ class _candikerajaan extends State<CandiKerajaan> with SingleTickerProviderState
     return DefaultTabController(
         length: 4,
         child: Scaffold(
-          // appBar: AppBar(
-          //   title: Text("INDOCANDI",
-          //     style: new TextStyle(
-          //         fontSize: 24.0, fontWeight: FontWeight.bold
-          //     ),),
-          //   backgroundColor: Colors.blue,
-          //   centerTitle: true,
+          appBar: AppBar(
+            title: Text("Candi Kerajaan",
+              style: new TextStyle(
+                  fontSize: 24.0, fontWeight: FontWeight.bold
+              ),),
+            backgroundColor: Colors.blue,
+            centerTitle: true,
 
           // bottom: new TabBar(
           //     isScrollable: true,
@@ -72,7 +72,7 @@ class _candikerajaan extends State<CandiKerajaan> with SingleTickerProviderState
           //     ]
           // ),
 
-          // ),
+          ),
           drawer: SideBar(),
           body: _buildBody(context),
           //  body: TabBarView(children: [

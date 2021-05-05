@@ -15,6 +15,8 @@ import 'package:flutter_tes/CandiKerajaan.dart';
 import 'package:flutter_tes/CandiPribadi.dart';
 import 'package:flutter_tes/Info.dart';
 import 'package:flutter_tes/About.dart';
+import 'package:flutter_tes/halamanutama.dart';
+import 'package:flutter_tes/model.dart';
 
 void main() => runApp(MaterialApp(
   initialRoute: '/',
@@ -28,7 +30,8 @@ void main() => runApp(MaterialApp(
     'CandiPribadi' : (context) => CandiPribadi(),
     'About' : (context) => About(),
     'Info' : (context) => Info(),
-
+    //'HalamanUtama' : (context) => HalamanUtama(),
+    'UserViewModel' : (context) => UserViewModel(),
   },
   debugShowCheckedModeBanner: false,
 
@@ -51,8 +54,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
     CandiPribadi(),
     CandiWanua(),
     CandiDaerah(),
-
-
+   //HalamanUtama(),
+     UserViewModel(),
   ];
   @override
   void initState(){
@@ -73,40 +76,45 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
       length: 6,
       child: Scaffold(
       appBar: AppBar(
-        title: Text("INDOCANDI",
+        title: Text("Welcome",
           style: new TextStyle(
               fontSize: 24.0, fontWeight: FontWeight.bold
           ),),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.black26,
         centerTitle: true,
 
-        bottom: new TabBar(
-            isScrollable: true,
-            // indicatorWeight: 10.0,
-            //indicatorColor: Colors.black,
-            // controller: controller,
-            tabs:<Widget>[
-              new Tab(text: "Candi Keagamaan"),
-              new Tab(text: "Candi Non Keagamaan",),
-              new Tab(text: "Candi Wanua",),
-              new Tab(text: "Candi Daerah",),
-              new Tab(text: "Candi Kerajaan",),
-              new Tab(text: "Candi Pribadi",),
-            ]
-        ),
 
       ),
      drawer: SideBar(),
-     // body: _buildBody(context),
-      body: TabBarView(children: [
-        CandiKeagamaan(),
-        CandiNonKeagamaan(),
-        CandiWanua(),
-        CandiDaerah(),
-        CandiKerajaan(),
-        CandiPribadi(),
-      ],),
+          body:Container(
+              child: new Center(
+                  child: new Column(
+                      children: <Widget>[
 
+                        new Image.asset(
+                          "assets/images/logo.png",
+                          width: 200.0,
+                          height: 200.0,
+                        ),
+                        new RichText(
+                          text: TextSpan(
+                              style: TextStyle(color: Colors.black, fontSize: 18),
+                              children: <TextSpan>[
+                                //TextSpan(text: " Color", style: TextStyle(color: Colors.blue)),
+                                TextSpan(text: " Proyek bernama alun-alun merupakan proyek penelitianyang didanai oleh Dana Pribadi (2019), RISTEKDIKTI tahun 2018 dan LPPM UKDW tahun 2019. Penelitian ini fokus pada pengembangan model untuk beberapa objek budaya Indonesia, antara lain: Batik, Rumah, Candi, Makanan Tradisional, Upacara, Pakaian, dan Sastra. ", style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500, letterSpacing: 1.0,height: 1.7 ))
+                              ]
+                          ),
+                          textWidthBasis: TextWidthBasis.longestLine,
+                        ),
+                      ]
+
+                  )
+
+
+              )
+
+
+          )
       )
     );
   }

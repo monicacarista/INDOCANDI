@@ -35,14 +35,9 @@ class _about extends State<About> with SingleTickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // onWillPop: () {
-      //   moveToLastScreen();
-      // },
-
-        home: Scaffold(
+    return Scaffold(
           appBar: AppBar(
-            title: Text("INDOCANDI",
+            title: Text("WELCOME",
               style: new TextStyle(
                   fontSize: 24.0, fontWeight: FontWeight.bold
               ),
@@ -66,6 +61,15 @@ class _about extends State<About> with SingleTickerProviderStateMixin{
             child: new Center(
               child: new Column(
                   children: <Widget>[
+                    // new RichText(
+                    //   text: TextSpan(
+                    //       style: TextStyle(color: Colors.black, fontSize: 30),
+                    //       children: <TextSpan>[
+                    //         //TextSpan(text: " Color", style: TextStyle(color: Colors.blue)),
+                    //         TextSpan(text: "Welcome!", style: TextStyle(color: Colors.black,fontWeight: FontWeight.w800, letterSpacing: 1.0,height: 1.7 ))
+                    //       ]
+                    //   ),
+                    // ),
                       new Image.asset(
                       "assets/images/logo.png",
                           width: 200.0,
@@ -92,8 +96,8 @@ class _about extends State<About> with SingleTickerProviderStateMixin{
           )
 
 
-        )
-    );
+        );
+
   }
  // void moveToLastScreen(){
  //    Navigator.pop(context);
