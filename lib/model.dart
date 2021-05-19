@@ -46,21 +46,31 @@ class Results {
 }
 
 class Tripleset {
+  final TypeValue id;
   final TypeValue candi;
    final TypeValue lokasi;
    final TypeValue gambar;
+  final TypeValue jenis;
+  final TypeValue deskripsi;
+  final TypeValue arca;
+   // final TypeValue asal;
 
-  Tripleset(this.candi, this.lokasi, this.gambar);
+  Tripleset(this.id, this.candi, this.lokasi, this.gambar, this.jenis, this.deskripsi,this.arca);
 
   factory Tripleset.fromJson(Map json) {
-    return Tripleset(TypeValue.fromJson(json['candi']),
-         TypeValue.fromJson(json['lokasi']),
-        TypeValue.fromJson(json['gambar'])
+    return Tripleset(
+      TypeValue.fromJson(json['id']),
+      TypeValue.fromJson(json['candi']),
+      TypeValue.fromJson(json['lokasi']),
+      TypeValue.fromJson(json['gambar']),
+      TypeValue.fromJson(json['jenis']),
+         TypeValue.fromJson(json['deskripsi']),
+        TypeValue.fromJson(json['arca'])
     );
   }
 
   String toString() {
-    String s = "${candi}";
+    String s = "${id}\t\t${candi}\t\t${lokasi}\t\t${gambar}\t\t${jenis}\t\t${deskripsi}\t\t${arca}";
     return s;
   }
 }
@@ -81,87 +91,87 @@ class TypeValue {
   }
 }
 
-
-class UserViewModel extends StatefulWidget{
-
-  @override
-  _HalamanJsonState createState() => _HalamanJsonState();
-}
-
-class _HalamanJsonState extends State {
-
-  Future<List<Tripleset>> main1() async {
-    var payload = Uri.encodeComponent("prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
-        "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
-        "prefix : <http://alunalun.info/ontology/candi#> "+
-        "SELECT ?candi WHERE {?id rdf:type :CandiNonKeagamaan.?id rdfs:label ?candi . }");
-    var headers = new Map<String, String>();
-    headers['Content-Type'] = 'application/x-www-form-urlencoded';
-    headers['Accept'] = 'application/json';
-
-    var response = await http.post(
-        'https://app.alunalun.info/fuseki/candi/query',
-        headers: headers,
-        body: "query=${payload}");
-    List<Tripleset> jokes = [];
-
-    if (response.statusCode == 200) {
-      Map value = json.decode(response.body);
-      var head = SparqlResult.fromJson(value);
-      for (var data in head.results.listTriples) {
-        // print(data);
-        Tripleset tp = Tripleset(data.candi,data.lokasi,data.gambar);
-        jokes.add(tp);
-      }
-      return jokes;
-    }
-
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    main1();
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return  Scaffold(
-        appBar: AppBar(
-          title: Text('Flutter ListView'),
-        ),
-        body: Center(
-          child: FutureBuilder <List<Tripleset>>(
-            future: main1(),
-            builder: (context, AsyncSnapshot snapshot) {
-            //  print(snapshot.data);
-              if (snapshot.data == null) {
-                return Container(
-                  child: Center(
-                    child: Text("Loading"),
-                  ),
-                );
-              } else {
-
-                return
-                  ListView.builder(
-                     itemCount: snapshot.data.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          height: 75,
-                          color: Colors.white,
-                          child: Center(child: Text(snapshot.data[index].candi.value),
-                          ),);
-                      }
-                  );
-              }
-              // By default show a loading spinner.
-              return CircularProgressIndicator();
-            },
-          ),
-        ),
-
-    );
-  }
-}
+//
+// class UserViewModel extends StatefulWidget{
+//
+//   @override
+//   _HalamanJsonState createState() => _HalamanJsonState();
+// }
+//
+// class _HalamanJsonState extends State {
+//
+//   Future<List<Tripleset>> main1() async {
+//     var payload = Uri.encodeComponent("prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
+//         "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
+//         "prefix : <http://alunalun.info/ontology/candi#> "+
+//         "SELECT ?candi WHERE {?id rdf:type :CandiNonKeagamaan.?id rdfs:label ?candi . }");
+//     var headers = new Map<String, String>();
+//     headers['Content-Type'] = 'application/x-www-form-urlencoded';
+//     headers['Accept'] = 'application/json';
+//
+//     var response = await http.post(
+//         'https://app.alunalun.info/fuseki/candi/query',
+//         headers: headers,
+//         body: "query=${payload}");
+//     List<Tripleset> jokes = [];
+//
+//     if (response.statusCode == 200) {
+//       Map value = json.decode(response.body);
+//       var head = SparqlResult.fromJson(value);
+//       for (var data in head.results.listTriples) {
+//         // print(data);
+//         Tripleset tp = Tripleset(data.candi,data.lokasi,data.gambar,data.deskripsi,data.asal);
+//         jokes.add(tp);
+//       }
+//       return jokes;
+//     }
+//
+//   }
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     main1();
+//
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return  Scaffold(
+//         appBar: AppBar(
+//           title: Text('Flutter ListView'),
+//         ),
+//         body: Center(
+//           child: FutureBuilder <List<Tripleset>>(
+//             future: main1(),
+//             builder: (context, AsyncSnapshot snapshot) {
+//             //  print(snapshot.data);
+//               if (snapshot.data == null) {
+//                 return Container(
+//                   child: Center(
+//                     child: Text("Loading"),
+//                   ),
+//                 );
+//               } else {
+//
+//                 return
+//                   ListView.builder(
+//                      itemCount: snapshot.data.length,
+//                       itemBuilder: (BuildContext context, int index) {
+//                         return Container(
+//                           height: 75,
+//                           color: Colors.white,
+//                           child: Center(child: Text(snapshot.data[index].candi.value),
+//                           ),);
+//                       }
+//                   );
+//               }
+//               // By default show a loading spinner.
+//               return CircularProgressIndicator();
+//             },
+//           ),
+//         ),
+//
+//     );
+//   }
+// }

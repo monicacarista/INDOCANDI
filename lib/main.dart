@@ -8,20 +8,20 @@ import 'package:flutter_tes/Tab/SideBar.dart';
 import 'package:flutter_tes/splashscreen_view.dart';
 import 'package:http/http.dart'as http;
 import 'dart:convert';
-import 'package:flutter_tes/list_item.dart';
+import 'package:flutter_tes/DetailNonKeagamaan.dart';
 
 import 'package:flutter_tes/CandiKeagamaan.dart';
 import 'package:flutter_tes/CandiKerajaan.dart';
 import 'package:flutter_tes/CandiPribadi.dart';
 import 'package:flutter_tes/Info.dart';
 import 'package:flutter_tes/About.dart';
-import 'package:flutter_tes/halamanutama.dart';
+import 'package:flutter_tes/detailPage.dart';
 import 'package:flutter_tes/model.dart';
 
 void main() => runApp(MaterialApp(
   initialRoute: '/',
   routes: {
-    '/': (ctx) => SplashScreenPage(),
+   '/': (ctx) => SplashScreenPage(),
     'CandiKeagamaan': (context) => CandiKeagamaan(),
     'CandiNonKeagamaan': (context) => CandiNonKeagamaan(),
     'CandiWanua': (context) => CandiWanua(),
@@ -31,7 +31,9 @@ void main() => runApp(MaterialApp(
     'About' : (context) => About(),
     'Info' : (context) => Info(),
     //'HalamanUtama' : (context) => HalamanUtama(),
-    'UserViewModel' : (context) => UserViewModel(),
+  //  'UserViewModel' : (context) => UserViewModel(),
+    'MyApp' : (context) => MyApp(),
+   // 'Detail' :(context) => DetailPage(),
   },
   debugShowCheckedModeBanner: false,
 
@@ -47,6 +49,9 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
   //controller utk tab bar
   TabController controller;
   int index=0;
+  List<Tripleset> _search = [];
+
+
   List<Widget> list = [
     CandiKeagamaan(),
     CandiNonKeagamaan(),
@@ -55,7 +60,9 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
     CandiWanua(),
     CandiDaerah(),
    //HalamanUtama(),
-     UserViewModel(),
+    // UserViewModel(),
+    MyApp(),
+  //DetailPage(),
   ];
   @override
   void initState(){
@@ -93,11 +100,11 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
       length: 6,
       child: Scaffold(
       appBar: AppBar(
-        title: Text("Welcome",
+        title: Text("INDOCANDI",
           style: new TextStyle(
               fontSize: 24.0, fontWeight: FontWeight.bold
           ),),
-        backgroundColor: Colors.black26,
+        backgroundColor: Colors.blueGrey.shade700,
         centerTitle: true,
 
 
@@ -118,9 +125,14 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 new ClipRRect(
-                                  child: new Image.asset(
-                                    Gambar[index]
-                                  ),
+                                 // child: ListTile(
+                                child: new Image.asset(
+                                  Gambar[index],
+                                ),
+                                      // onTap:(){
+                                      //   Navigator.push(context, MaterialPageRoute(builder: (context) => Detail()));
+                                      // }
+                           // )
                                   borderRadius: BorderRadius.only(
                                     topLeft: new Radius.circular(16.0),
                                     topRight: new Radius.circular(16.0),
@@ -138,7 +150,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                       ),),
-                                      new SizedBox(height: 16.0),
+                                      new SizedBox(height: 16.0,),
+
 
                                     ],
                                   ),
@@ -146,7 +159,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
                               ],
                             ),
                             // onTap: () {
-                            //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(data: this.data)));
+                            //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage()));
                             // },
                           ),
                         );

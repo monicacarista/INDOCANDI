@@ -1,101 +1,149 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_tes/CandiDaerah.dart';
-import 'package:flutter_tes/splashscreen_view.dart';
-import 'package:flutter_tes/CandiKeagamaan.dart';
-import 'package:http/http.dart'as http;
+import 'dart:io';
 import 'dart:convert';
-import 'package:flutter_tes/list_item.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_tes/model.dart';
 import 'package:flutter_tes/Tab/SideBar.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class CandiPribadi extends StatefulWidget {
+import 'list_item.dart';
+
+
+class CandiPribadi extends StatefulWidget{
+
   @override
-  _candipribadi createState() => _candipribadi();
-
+  _CandiPribadi createState() => _CandiPribadi();
 }
 
-class _candipribadi extends State<CandiPribadi> with SingleTickerProviderStateMixin{
-  //controller utk tab bar
-  TabController controller;
+class  _CandiPribadi extends State {
 
+  Future<List<Tripleset>> mainPribadi() async {
+    var payload = Uri.encodeComponent("prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
+        "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
+        "prefix : <http://alunalun.info/ontology/candi#>"+
+        "prefix schema: <http://schema.org/>"+
+        "PREFIX dbo: <http://dbpedia.org/ontology/>"+
+        "SELECT ?id  ?candi ?lokasi ?gambar ?jenis WHERE {"+
+        "?id rdf:type :CandiPribadi ."+
+        ":CandiPribadi rdfs:label ?jenis."+
+        "?id :berasalDari ?idlokasi."+
+        "?id rdfs:label ?candi."+
+        "?idlokasi dbo:location ?lokasi. ?id :profil ?gambar.?id :Deskripsi ?deskripsi.}");
+    var headers = new Map<String, String>();
+    headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    headers['Accept'] = 'application/json';
+
+    var response = await http.post(
+        'https://app.alunalun.info/fuseki/candi/query',
+        headers: headers,
+        body: "query=${payload}");
+    List<Tripleset> jokes = [];
+
+    if (response.statusCode == 200) {
+      Map value = json.decode(response.body);
+      var head = SparqlResult.fromJson(value);
+      for (var data in head.results.listTriples) {
+        // print(data);
+        Tripleset tp = Tripleset(data.id,data.candi,data.lokasi,data.gambar,data.jenis,data.deskripsi,data.arca);
+        print(data);
+        jokes.add(tp);
+      }
+
+      return jokes;
+    }
+
+  }
 
   @override
-  void initState(){
-    controller = new TabController(vsync: this, length: 4);
+  void initState() {
     super.initState();
-    http.get(_apiUrl).then((response){
-      var data = json.decode(response.body);
-      print(response);
-      setState(() {
-        _total = data['totalResults'];
-        _articles = data['articles'];
-        _loading =false;
-      });
-    });
+    mainPribadi();
   }
 
-  @override
-  void dispose(){
-    controller.dispose();
-    super.dispose();
-  }
-
-  String _apiUrl = 'http://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=7aedbfcb0d4e4ceca6ec38f24c329fa2';
-  int _total=0;
-  List _articles=[];
-  bool _loading = true;
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("Candi Pribadi",
-              style: new TextStyle(
-                  fontSize: 24.0, fontWeight: FontWeight.bold
-              ),),
-            backgroundColor: Colors.blue,
-            centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Candi Pribadi'),
+        backgroundColor: Colors.blueGrey.shade700,
 
-          // bottom: new TabBar(
-          //     isScrollable: true,
-          //     // indicatorWeight: 10.0,
-          //     //indicatorColor: Colors.black,
-          //     // controller: controller,
-          //     tabs:<Widget>[
-          //       new Tab(text: "Candi Keagamaan"),
-          //       new Tab(text: "Candi Non Keagamaan",),
-          //       new Tab(text: "Candi Wanua",),
-          //       new Tab(text: "Candi Daerah",),
-          //     ]
-          // ),
+      ),
+      body: Center(
+        child: FutureBuilder <List<Tripleset>>(
+          future: mainPribadi(),
+          builder: (context, AsyncSnapshot snapshot){
+            if (snapshot.data == null) {
+              return CircularProgressIndicator();
+            } else{
+              return
+                ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return new Card(
+                        elevation: 2.0,
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(16.0),
+                        ),
+                        child: new InkWell(
+                          child: new Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new ClipRRect(
+                                child: new Image.network(
+                                  // "assets/images/borobudur.jpg",
+                                    "snapshot.data[index].gambar.value"
+                                ),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: new Radius.circular(16.0),
+                                  topRight: new Radius.circular(16.0),
+                                ),
 
-           ),
-          drawer: SideBar(),
-          body: _buildBody(context),
+                              ),
 
-        )
-    );
-  }
-  _buildBody(BuildContext context) {
-    if(_loading) {
-      return new SpinKitRotatingCircle(
-        color: Colors.blue,
-        size: 50.0,
-      );
-    }
+                              new Padding(
+                                padding: new EdgeInsets.all(16.0),
+                                child: new Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    new Text(snapshot.data[index].candi.value,
+                                      style: new TextStyle(fontWeight: FontWeight.bold),),
+                                    new SizedBox(height: 16.0),
+                                    new Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
 
-    return new ListView.builder(
-      itemBuilder: (context, index){
-        return new Padding(
-          padding: new EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0 ),
-          child: new ListItem(data: _articles[index]),
-        );
+                                        new Text(snapshot.data[index].jenis.value),
+                                        new Text(snapshot.data[index].lokasi.value),
 
-      },
-      itemCount: 10,
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          // onTap: () {
+                          //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(data: this.data)));
+                          // },
+                        ),
+                      );
+                    }
+                );
+
+
+
+
+
+            }
+
+          },
+        ),
+      ),
     );
   }
 

@@ -11,7 +11,7 @@ class SideBar extends StatelessWidget {
           child: ListView(
             children: [
               DrawerHeader(
-                decoration: BoxDecoration(color: Colors.black26),
+                decoration: BoxDecoration(color: Colors.blueGrey.shade700),
                 child: Padding(
                   padding: EdgeInsets.all(6),
                   child: Column(
@@ -37,6 +37,14 @@ class SideBar extends StatelessWidget {
 
                     ],
                   ),
+                ),
+              ),
+              ListTile(
+                title: Text('Home'),
+
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  'MyApp',
                 ),
               ),
               ListTile(
@@ -96,11 +104,11 @@ class SideBar extends StatelessWidget {
                 ),
               ),
               ListTile(
-                title: Text('TES Us'),
+                title: Text('DetailPage'),
 
                 onTap: () => Navigator.pushNamed(
                   context,
-                  'HalamanUtama',
+                  'DetailPage',
                 ),
               ),
               ListTile(
