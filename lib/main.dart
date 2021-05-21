@@ -6,11 +6,10 @@ import 'package:flutter_tes/CandiNonKeagamaan.dart';
 import 'package:flutter_tes/CandiWanua.dart';
 import 'package:flutter_tes/Tab/SideBar.dart';
 import 'package:flutter_tes/splashscreen_view.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart'as http;
 import 'dart:convert';
-import 'package:flutter_tes/DetailNonKeagamaan.dart';
-
-import 'package:flutter_tes/CandiKeagamaan.dart';
+import 'package:flutter_tes/halamanutama.dart';
 import 'package:flutter_tes/CandiKerajaan.dart';
 import 'package:flutter_tes/CandiPribadi.dart';
 import 'package:flutter_tes/Info.dart';
@@ -18,11 +17,14 @@ import 'package:flutter_tes/About.dart';
 import 'package:flutter_tes/detailPage.dart';
 import 'package:flutter_tes/model.dart';
 
+import 'CandiBuddha.dart';
+import 'CandiHindu.dart';
+import 'CandiSiwaBuddha.dart';
+
 void main() => runApp(MaterialApp(
   initialRoute: '/',
   routes: {
    '/': (ctx) => SplashScreenPage(),
-    'CandiKeagamaan': (context) => CandiKeagamaan(),
     'CandiNonKeagamaan': (context) => CandiNonKeagamaan(),
     'CandiWanua': (context) => CandiWanua(),
     'CandiDaerah': (context) => CandiDaerah(),
@@ -30,7 +32,7 @@ void main() => runApp(MaterialApp(
     'CandiPribadi' : (context) => CandiPribadi(),
     'About' : (context) => About(),
     'Info' : (context) => Info(),
-    //'HalamanUtama' : (context) => HalamanUtama(),
+    'HalamanUtama' : (context) => HalamanUtama(),
   //  'UserViewModel' : (context) => UserViewModel(),
     'MyApp' : (context) => MyApp(),
    // 'Detail' :(context) => DetailPage(),
@@ -53,13 +55,12 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
 
 
   List<Widget> list = [
-    CandiKeagamaan(),
     CandiNonKeagamaan(),
     CandiKerajaan(),
     CandiPribadi(),
     CandiWanua(),
     CandiDaerah(),
-   //HalamanUtama(),
+   HalamanUtama(),
     // UserViewModel(),
     MyApp(),
   //DetailPage(),
@@ -77,98 +78,342 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
     super.dispose();
   }
 
-  final List Kategori = [
-    "Candi Non Keagamaan",
-    "Candi Keagamaan",
-    "Candi Kerajaan ",
-    "Candi Pribadi",
-    "Candi Wanua",
-    "Candi Daerah",
-  ];
-  final List Gambar = [
-        "assets/images/CandiAbang.jpg",
-        "assets/images/CandiAngin.jpg",
-        "assets/images/borobudur.jpg",
-        "assets/images/CandiBajangRatu.jpg",
-        "assets/images/CandiCungkup.jpg",
-        "assets/images/CandiGunungKawi.jpg",
-  ];
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 6,
-      child: Scaffold(
+
+    return Scaffold(
       appBar: AppBar(
-        title: Text("INDOCANDI",
-          style: new TextStyle(
-              fontSize: 24.0, fontWeight: FontWeight.bold
-          ),),
+        title: Text('INDOCANDI'),
         backgroundColor: Colors.blueGrey.shade700,
-        centerTitle: true,
+
+      ),
+      drawer: SideBar(),
+      body: new SingleChildScrollView(
+        child: new Padding(padding: const EdgeInsets.all(5.0),
+          child:  Card(
+            elevation: 2.0,
+            shape: new RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(16.0),
+            ),
+            child: new InkWell(
+
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+
+                  new ClipRRect(
+                    child: new Image.asset(
+                      "assets/images/CandiAbang.jpg",
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: new Radius.circular(16.0),
+                      topRight: new Radius.circular(16.0),
+                    ),
+
+
+                  ), new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new IconButton(
+                        icon: new Icon(FontAwesomeIcons.angleRight),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new CandiHindu()));
+                        },
+                      )
+                    ],
+                  ),
+
+                  new Padding(
+                    padding: new EdgeInsets.all(16.0),
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Text("Candi Hindu",
+                          style: new TextStyle(fontWeight: FontWeight.bold),),
+                        new SizedBox(height: 16.0),
+
+                      ],
+                    ),
+                  ),
+                  // hindu
+
+                  new ClipRRect(
+                    child: new Image.asset(
+                      "assets/images/borobudur.jpg",
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: new Radius.circular(16.0),
+                      topRight: new Radius.circular(16.0),
+                    ),
+
+
+                  ), new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new IconButton(
+                        icon: new Icon(FontAwesomeIcons.angleRight),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new CandiBuddha()));
+                        },
+                      )
+                    ],
+                  ),
+
+                  new Padding(
+                    padding: new EdgeInsets.all(16.0),
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Text("Candi Buddha",
+                          style: new TextStyle(fontWeight: FontWeight.bold),),
+                        new SizedBox(height: 16.0),
+
+                      ],
+                    ),
+                  ),
+                  //budha
+
+                  new ClipRRect(
+                    child: new Image.asset(
+                      "assets/images/CandiBarong.jpg",
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: new Radius.circular(16.0),
+                      topRight: new Radius.circular(16.0),
+                    ),
+
+
+                  ), new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new IconButton(
+                        icon: new Icon(FontAwesomeIcons.angleRight),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new CandiSiwaBuddha()));
+                        },
+                      )
+                    ],
+                  ),
+
+                  new Padding(
+                    padding: new EdgeInsets.all(16.0),
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Text("Candi Non Keagamaan",
+                          style: new TextStyle(fontWeight: FontWeight.bold),),
+                        new SizedBox(height: 16.0),
+
+                      ],
+                    ),
+                  ),
+                  // siwa budha
+                  new ClipRRect(
+                    child: new Image.asset(
+                      "assets/images/CandiAngin.jpg",
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: new Radius.circular(16.0),
+                      topRight: new Radius.circular(16.0),
+                    ),
+
+
+                  ), new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new IconButton(
+                        icon: new Icon(FontAwesomeIcons.angleRight),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new CandiNonKeagamaan()));
+                        },
+                      )
+                    ],
+                  ),
+
+                  new Padding(
+                    padding: new EdgeInsets.all(16.0),
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Text("Candi Kerajaan",
+                          style: new TextStyle(fontWeight: FontWeight.bold),),
+                        new SizedBox(height: 16.0),
+
+                      ],
+                    ),
+                  ),
+                  //nonkeagaamn
+
+                  new ClipRRect(
+                    child: new Image.asset(
+                      "assets/images/CandiKelir.jpg",
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: new Radius.circular(16.0),
+                      topRight: new Radius.circular(16.0),
+                    ),
+
+
+                  ), new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new IconButton(
+                        icon: new Icon(FontAwesomeIcons.angleRight),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new CandiKerajaan()));
+                        },
+                      )
+                    ],
+                  ),
+
+                  new Padding(
+                    padding: new EdgeInsets.all(16.0),
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Text("Candi Kerajaan",
+                          style: new TextStyle(fontWeight: FontWeight.bold),),
+                        new SizedBox(height: 16.0),
+
+                      ],
+                    ),
+                  ),
+                  //kerajaan
+                  new ClipRRect(
+                    child: new Image.asset(
+                      "assets/images/CandiBajangRatu.jpg",
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: new Radius.circular(16.0),
+                      topRight: new Radius.circular(16.0),
+                    ),
+
+
+                  ), new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new IconButton(
+                        icon: new Icon(FontAwesomeIcons.angleRight),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new CandiPribadi()));
+                        },
+                      )
+                    ],
+                  ),
+
+                  new Padding(
+                    padding: new EdgeInsets.all(16.0),
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Text("Candi Pribadi",
+                          style: new TextStyle(fontWeight: FontWeight.bold),),
+                        new SizedBox(height: 16.0),
+
+                      ],
+                    ),
+                  ),
+                  //pribadi
+                  new ClipRRect(
+                    child: new Image.asset(
+                      "assets/images/CandiCungkup.jpg",
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: new Radius.circular(16.0),
+                      topRight: new Radius.circular(16.0),
+                    ),
+
+
+                  ), new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new IconButton(
+                        icon: new Icon(FontAwesomeIcons.angleRight),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new CandiWanua()));
+                        },
+                      )
+                    ],
+                  ),
+
+                  new Padding(
+                    padding: new EdgeInsets.all(16.0),
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Text("Candi Wanua atau Watak",
+                          style: new TextStyle(fontWeight: FontWeight.bold),),
+                        new SizedBox(height: 16.0),
+
+                      ],
+                    ),
+                  ),
+                  //wanua watak
+                  new ClipRRect(
+                    child: new Image.asset(
+                      "assets/images/CandiGunungKawi.jpg",
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: new Radius.circular(16.0),
+                      topRight: new Radius.circular(16.0),
+                    ),
+
+
+                  ), new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new IconButton(
+                        icon: new Icon(FontAwesomeIcons.angleRight),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new CandiWanua()));
+                        },
+                      )
+                    ],
+                  ),
+
+                  new Padding(
+                    padding: new EdgeInsets.all(16.0),
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Text("Candi Daerah",
+                          style: new TextStyle(fontWeight: FontWeight.bold),),
+                        new SizedBox(height: 16.0),
+
+                      ],
+                    ),
+                  ),
+
+                ],
+
+              ),
+              // onTap: () {
+              //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(data: this.data)));
+              // },
+            ),
+
+          ),
+        ),
 
 
       ),
-     drawer: SideBar(),
-        body: Center(
-          child: ListView.builder(
-              itemCount: Gambar.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new Card(
-                          elevation: 2.0,
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(16.0),
-                          ),
-                          child: new InkWell(
-                            child: new Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                new ClipRRect(
-                                 // child: ListTile(
-                                child: new Image.asset(
-                                  Gambar[index],
-                                ),
-                                      // onTap:(){
-                                      //   Navigator.push(context, MaterialPageRoute(builder: (context) => Detail()));
-                                      // }
-                           // )
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: new Radius.circular(16.0),
-                                    topRight: new Radius.circular(16.0),
-                                  ),
-                                ),
-                                new Padding(
-                                  padding: new EdgeInsets.all(16.0),
-                                  child: new Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      new Text(Kategori[index],
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),),
-                                      new SizedBox(height: 16.0,),
 
-
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            // onTap: () {
-                            //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage()));
-                            // },
-                          ),
-                        );
-                      }
-                  )
-    )
-    )
     );
-              }
+
+
+
+  }
+
   }
 
 

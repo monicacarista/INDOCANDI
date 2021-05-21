@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_tes/CandiDaerah.dart';
 import 'package:flutter_tes/splashscreen_view.dart';
-import 'package:flutter_tes/CandiKeagamaan.dart';
 import 'package:http/http.dart'as http;
 import 'dart:convert';
 import 'package:flutter_tes/list_item.dart';

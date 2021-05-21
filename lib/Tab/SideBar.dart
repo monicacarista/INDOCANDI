@@ -103,23 +103,6 @@ class SideBar extends StatelessWidget {
                   'About',
                 ),
               ),
-              ListTile(
-                title: Text('DetailPage'),
-
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  'DetailPage',
-                ),
-              ),
-              ListTile(
-                title: Text('TES '),
-
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  'UserViewModel',
-                ),
-              ),
-
 
             ],
           ),

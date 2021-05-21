@@ -45,7 +45,7 @@ class _CandiWanua extends State {
       var head = SparqlResult.fromJson(value);
       for (var data in head.results.listTriples) {
         // print(data);
-        Tripleset tp = Tripleset(data.id,data.candi,data.lokasi,data.gambar,data.jenis,data.deskripsi,data.arca);
+        Tripleset tp = Tripleset(data.id,data.candi,data.lokasi,data.gambar,data.jenis,data.deskripsi,data.arca,data.upacara);
         print(data);
         jokes.add(tp);
       }

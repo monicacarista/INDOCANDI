@@ -16,11 +16,12 @@ class DetailPage extends StatefulWidget {
   final String lokasi;
   final String deskripsi;
   final String arca;
-   DetailPage({Key key, @required this.candi, @required this.jenis, @required this.lokasi,@required this.deskripsi, @required this.arca}) : super(key :key);
+  final String upacara;
+   DetailPage({Key key, @required this.candi, @required this.jenis, @required this.lokasi,@required this.deskripsi, @required this.arca, @required this.upacara}) : super(key :key);
 
 
   @override
-  _DetailPageState createState() => new _DetailPageState(candi,jenis,lokasi, deskripsi,arca);
+  _DetailPageState createState() => new _DetailPageState(candi,jenis,lokasi, deskripsi,arca,upacara);
 }
 
 class _DetailPageState extends State<DetailPage> {
@@ -29,7 +30,8 @@ class _DetailPageState extends State<DetailPage> {
   String jenis;
   String lokasi;
   String deskripsi;
-_DetailPageState(this.candi, this.jenis, this.lokasi,this.deskripsi,this.arca);
+  String upacara;
+_DetailPageState(this.candi, this.jenis, this.lokasi,this.deskripsi,this.arca, this.upacara);
 
   List<Tripleset> jokes = [];
  // Map value;
@@ -52,6 +54,9 @@ _DetailPageState(this.candi, this.jenis, this.lokasi,this.deskripsi,this.arca);
       //
       // ),
       body: Center(
+
+      child:Center(
+              // child: new SingleChildScrollView (
 
               child: CustomScrollView(
                 slivers: <Widget>[
@@ -79,17 +84,23 @@ _DetailPageState(this.candi, this.jenis, this.lokasi,this.deskripsi,this.arca);
                       child: new Column(
                         children: <Widget>[
                           new Text(candi, style: Theme.of(context).textTheme.title,),
-
                           new SizedBox(height: 15.0),
                           new Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              new Text(lokasi ?? ''),
-                              new Text(jenis),
+                              new Text("Asal :"),
+                              new Text(lokasi),
                             ],
                           ),
                           new SizedBox(height: 12.0),
-                          new Divider(),
+                          new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              new Text("Jenis :"),
+                              new Text(jenis),
+                            ],
+                          ),
+                       //   new Divider(),
                           new SizedBox(height: 12.0),
                           new Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -99,35 +110,48 @@ _DetailPageState(this.candi, this.jenis, this.lokasi,this.deskripsi,this.arca);
                             ],
                           ),
                           new SizedBox(height: 12.0),
-                          new Text(deskripsi),
-                          new SizedBox(height: 20.0),
                           new Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              new IconButton(
-                                icon: new Icon(FontAwesomeIcons.mapMarkedAlt),
-                                // onPressed: () {
-                                //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => new WebPage(data: widget.data)));
-                                // },
-                              )
+                              new Text("Upacara :"),
+                              new Text(upacara),
                             ],
                           ),
+                          new SizedBox(height: 12.0),
+                          new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              new Text("Deskripsi :"),
+                              new RichText(
+                                  text: TextSpan(
+                                    text: deskripsi,
+                                 //   style: DefaultTextStyle.of(context).style,
+                                  ),                             ),
+                            ],
+                          ),
+                          new SizedBox(height: 20.0),
+                          // new Row(
+                          //   mainAxisAlignment: MainAxisAlignment.end,
+                          //   children: <Widget>[
+                          //     new IconButton(
+                          //       icon: new Icon(FontAwesomeIcons.mapMarkedAlt),
+                          //       // onPressed: () {
+                          //       //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => new WebPage(data: widget.data)));
+                          //       // },
+                          //     )
+                          //   ],
+                          // ),
                         ],
                       ),
                     ),
                   ),
                 ],
               ),
-
-
-
-
-
          //   }
-
          // },
        // ),
       ),
+      )
     );
   }
 

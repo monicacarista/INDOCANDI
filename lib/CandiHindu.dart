@@ -1,31 +1,38 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_tes/detailPage.dart';
 import 'package:flutter_tes/model.dart';
 import 'package:flutter_tes/Tab/SideBar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 
 import 'list_item.dart';
 
 
-class CandiKeagamaan extends StatefulWidget{
+class CandiHindu extends StatefulWidget{
 
   @override
-  _CandiKeagamaan createState() => _CandiKeagamaan();
+  _CandiHindu createState() => _CandiHindu();
 }
 
-class _CandiKeagamaan extends State {
+class _CandiHindu extends State {
 
-  Future<List<Tripleset>> mainKeagamaan() async {
+  List<Tripleset> jokes = [];
+  Future<List<Tripleset>> mainNon() async {
     var payload = Uri.encodeComponent("prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
         "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
-        "prefix : <http://alunalun.info/ontology/candi#> "+
+        "prefix : <http://alunalun.info/ontology/candi#>"+
         "prefix schema: <http://schema.org/>"+
-        "  PREFIX dbo: <http://dbpedia.org/ontology/>"+
-        "SELECT ?candi ?lokasi ?gambar WHERE {?id rdf:type :CandiKeagamaan.?id rdfs:label ?candi . id :berasalDari ?idlokasi."+
-       "?idlokasi dbo:location ?lokasi. ?id :profil ?gambar.}");
+        "PREFIX dbo: <http://dbpedia.org/ontology/>"+
+        "SELECT  ?id ?candi ?lokasi ?gambar ?jenis ?deskripsi ?arca WHERE {"+
+        "?id rdf:type :CandiNonKeagamaan ."+
+        ":CandiNonKeagamaan rdfs:label ?jenis."+
+        "?id :berasalDari ?idlokasi."+
+        "?id rdfs:label ?candi."+
+        "?idlokasi dbo:location ?lokasi. ?id :profil ?gambar.?id :Deskripsi ?deskripsi. ?id :terdapatArca ?idarca. ?idarca rdfs:label ?arca}");
     var headers = new Map<String, String>();
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
     headers['Accept'] = 'application/json';
@@ -34,15 +41,16 @@ class _CandiKeagamaan extends State {
         'https://app.alunalun.info/fuseki/candi/query',
         headers: headers,
         body: "query=${payload}");
-    List<Tripleset> jokes = [];
+
 
     if (response.statusCode == 200) {
       Map value = json.decode(response.body);
+      print(value);
       var head = SparqlResult.fromJson(value);
       for (var data in head.results.listTriples) {
-        // print(data);
         print(data);
-        Tripleset tp = Tripleset(data.id,data.candi,data.lokasi,data.gambar,data.jenis,data.deskripsi,data.arca);
+        Tripleset tp = Tripleset(data.id,data.candi,data.lokasi,data.gambar,data.jenis,data.deskripsi,data.arca,data.upacara);
+        //print(data);
         jokes.add(tp);
       }
       print(jokes);
@@ -54,28 +62,28 @@ class _CandiKeagamaan extends State {
   @override
   void initState() {
     super.initState();
-    mainKeagamaan();
+    mainNon();
   }
 
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Candi Keagamaan'),
+        title: Text('Candi Non Keagamaan'),
         backgroundColor: Colors.blueGrey.shade700,
 
       ),
       body: Center(
         child: FutureBuilder <List<Tripleset>>(
-          future: mainKeagamaan(),
+          future: mainNon(),
           builder: (context, AsyncSnapshot snapshot){
+
             if (snapshot.data == null) {
-              return Container(
-                child: Center(
-                  child: Text("Loadinggggggggggggggggggggggggggggggggg"),
-                ),
-              );
+
+              return CircularProgressIndicator();
+
             } else{
               return
                 ListView.builder(
@@ -100,22 +108,39 @@ class _CandiKeagamaan extends State {
                                   topLeft: new Radius.circular(16.0),
                                   topRight: new Radius.circular(16.0),
                                 ),
-
                               ),
-
+                              new Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  new IconButton(
+                                    icon: new Icon(FontAwesomeIcons.angleRight),
+                                    onPressed: () {
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(candi: snapshot.data[index].candi.value,
+                                          jenis: snapshot.data[index].jenis.value,
+                                          lokasi : snapshot.data[index].lokasi.value,
+                                          deskripsi: snapshot.data[index].deskripsi.value,
+                                          arca: snapshot.data[index].arca.value
+                                        //    type:snapshot.data[index].candi.type
+                                      )));
+                                    },
+                                  )
+                                ],
+                              ),
                               new Padding(
                                 padding: new EdgeInsets.all(16.0),
                                 child: new Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    new Text(snapshot.data[index].candi.value),
+                                    new Text(snapshot.data[index].candi.value,
+                                      style: new TextStyle(fontWeight: FontWeight.bold),),
                                     new SizedBox(height: 16.0),
                                     new Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
+                                        new Text(snapshot.data[index].jenis.value),
                                         new Text(snapshot.data[index].lokasi.value),
-                                        //  new Text(data['source']['name']),
+
                                       ],
                                     ),
                                   ],
@@ -123,7 +148,6 @@ class _CandiKeagamaan extends State {
                               ),
                             ],
                           ),
-
                           // onTap: () {
                           //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(data: this.data)));
                           // },
@@ -131,10 +155,6 @@ class _CandiKeagamaan extends State {
                       );
                     }
                 );
-
-
-
-
 
             }
 

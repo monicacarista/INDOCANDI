@@ -27,12 +27,17 @@ class _CandiNonKeagamaan extends State {
         "prefix : <http://alunalun.info/ontology/candi#>"+
         "prefix schema: <http://schema.org/>"+
         "PREFIX dbo: <http://dbpedia.org/ontology/>"+
-        "SELECT  ?id ?candi ?lokasi ?gambar ?jenis ?deskripsi ?arca WHERE {"+
-        "?id rdf:type :CandiNonKeagamaan ."+
+        "SELECT  ?id ?candi ?lokasi ?gambar ?jenis   (COALESCE(?acara,'-') as ?upacara) (COALESCE(?desc, '-') as ?deskripsi) (COALESCE(?arcas,'-') as ?arca) WHERE {"+
+    "?id rdf:type :CandiNonKeagamaan ."+
         ":CandiNonKeagamaan rdfs:label ?jenis."+
-        "?id :berasalDari ?idlokasi."+
-        "?id rdfs:label ?candi."+
-        "?idlokasi dbo:location ?lokasi. ?id :profil ?gambar.?id :Deskripsi ?deskripsi. ?id :terdapatArca ?idarca. ?idarca rdfs:label ?arca}");
+    "?id :berasalDari ?idlokasi."+
+    "?id rdfs:label ?candi."+
+    "?idlokasi dbo:location ?lokasi. ?id :profil ?gambar."+
+    "OPTIONAL{?id :Deskripsi ?desc.}"+
+        "OPTIONAL {?id :untukUpacara ?idu."+
+    "?idu rdfs:label ?acara}"+
+    "OPTIONAL{?id :terdapatArca ?idarca. ?idarca rdfs:label ?arcas}}");
+
     var headers = new Map<String, String>();
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
     headers['Accept'] = 'application/json';
@@ -41,6 +46,7 @@ class _CandiNonKeagamaan extends State {
         'https://app.alunalun.info/fuseki/candi/query',
         headers: headers,
         body: "query=${payload}");
+    print(response.body);
 
 
     if (response.statusCode == 200) {
@@ -49,12 +55,14 @@ class _CandiNonKeagamaan extends State {
       var head = SparqlResult.fromJson(value);
       for (var data in head.results.listTriples) {
         print(data);
-        Tripleset tp = Tripleset(data.id,data.candi,data.lokasi,data.gambar,data.jenis,data.deskripsi,data.arca);
+        Tripleset tp = Tripleset(data.id,data.candi,data.lokasi,data.gambar,data.jenis,data.deskripsi,data.arca,data.upacara);
         //print(data);
         jokes.add(tp);
       }
       print(jokes);
       return jokes;
+    }else{
+
     }
 
   }
@@ -81,7 +89,7 @@ class _CandiNonKeagamaan extends State {
           builder: (context, AsyncSnapshot snapshot){
 
             if (snapshot.data == null) {
-
+              print("DAta null");
               return CircularProgressIndicator();
 
             } else{
@@ -116,11 +124,12 @@ class _CandiNonKeagamaan extends State {
                                     icon: new Icon(FontAwesomeIcons.angleRight),
                                     onPressed: () {
                                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(candi: snapshot.data[index].candi.value,
-                                      jenis: snapshot.data[index].jenis.value,
-                                      lokasi : snapshot.data[index].lokasi.value,
-                                      deskripsi: snapshot.data[index].deskripsi.value,
-                                      arca: snapshot.data[index].arca.value
-                                      //    type:snapshot.data[index].candi.type
+                                          jenis: snapshot.data[index].jenis.value,
+                                          lokasi : snapshot.data[index].lokasi.value,
+                                          deskripsi: snapshot.data[index].deskripsi.value,
+                                          arca: snapshot.data[index].arca.value,
+                                          upacara: snapshot.data[index].upacara.value,
+                                        //    type:snapshot.data[index].candi.type
                                       )));
                                     },
                                   )
@@ -132,8 +141,8 @@ class _CandiNonKeagamaan extends State {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                   new Text(snapshot.data[index].candi.value,
-                                     style: new TextStyle(fontWeight: FontWeight.bold),),
+                                    new Text(snapshot.data[index].candi.value,
+                                      style: new TextStyle(fontWeight: FontWeight.bold),),
                                     new SizedBox(height: 16.0),
                                     new Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
