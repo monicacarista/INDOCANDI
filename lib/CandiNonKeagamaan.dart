@@ -21,22 +21,52 @@ class CandiNonKeagamaan extends StatefulWidget{
 class _CandiNonKeagamaan extends State {
 
   List<Tripleset> jokes = [];
+  List<Tripleset> _search = [];
+
+  TextEditingController controller = new TextEditingController();
+
+  //jokes.clear();
+  // onSearch(String text) async{
+  //   _search.clear();
+  //   if(text.isEmpty(){});
+  // }
   Future<List<Tripleset>> mainNon() async {
     var payload = Uri.encodeComponent("prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
-        "prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
+      "  prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
         "prefix : <http://alunalun.info/ontology/candi#>"+
         "prefix schema: <http://schema.org/>"+
         "PREFIX dbo: <http://dbpedia.org/ontology/>"+
-        "SELECT  ?id ?candi ?lokasi ?gambar ?jenis   (COALESCE(?acara,'-') as ?upacara) (COALESCE(?desc, '-') as ?deskripsi) (COALESCE(?arcas,'-') as ?arca) WHERE {"+
-    "?id rdf:type :CandiNonKeagamaan ."+
-        ":CandiNonKeagamaan rdfs:label ?jenis."+
-    "?id :berasalDari ?idlokasi."+
-    "?id rdfs:label ?candi."+
-    "?idlokasi dbo:location ?lokasi. ?id :profil ?gambar."+
+        "SELECT  ?id ?candi  ?jenis  ?lokasi "+
+        "(GROUP_CONCAT(COALESCE(?arcas,''); separator = '' )as ?arca)"+
+        "(COALESCE (?gambarr, '') as ?gambar)"+
+  "  (GROUP_CONCAT(COALESCE(?acara,''); separator = '' )as ?upacara)"+
+        "(GROUP_CONCAT(COALESCE(?relieff,''); separator = '' )as ?relief)"+
+        "(GROUP_CONCAT(COALESCE(?sb,''); separator = '' )as ?struktur_bangunan)"+
+        "(GROUP_CONCAT(COALESCE(?nama,''); separator = '' )as ?namaLain)"+
+        " (GROUP_CONCAT(COALESCE(?bahann,''); separator = '' )as ?bahan)"+
+    "(GROUP_CONCAT(COALESCE(?desc,''); separator = '' )as ?deskripsi)"+
+  "  WHERE {"+
+   " ?id rdf:type :CandiNonKeagamaan ."+
+     "   :CandiNonKeagamaan rdfs:label ?jenis."+
+ "   ?id rdfs:label ?candi."+
+   " OPTIONAL{?id :profil ?gambarr.}"+
+  "  OPTIONAL{?id :berasalDari ?idasal."+
+  "  ?idasal dbo:location ?asall. }"+
     "OPTIONAL{?id :Deskripsi ?desc.}"+
-        "OPTIONAL {?id :untukUpacara ?idu."+
-    "?idu rdfs:label ?acara}"+
-    "OPTIONAL{?id :terdapatArca ?idarca. ?idarca rdfs:label ?arcas}}");
+    "?id :berasalDari ?idasal."+
+    "?idasal dbo:location ?lokasi. "+
+   " OPTIONAL{?id :untukUpacara ?idu."+
+  "  ?idu rdfs:label ?acara}"+
+        "  OPTIONAL {?id :namaLainDari ?id."+
+        "?id rdfs:label ?nama}"+
+        "OPTIONAL {?id :terdapatRelief ?idrelief."+
+        "?idrelief rdfs:label ?relieff}"+
+        "OPTIONAL {?id :terdiriDari ?idsb."+
+        "?idsb rdfs:label ?sb}"+
+        "OPTIONAL {?id :tersusunDari ?idbahan."+
+        "?idbahan rdfs:label ?bahann.}"+
+  "  OPTIONAL{?id :terdapatArca ?idarca. ?idarca rdfs:label ?arcas}}"+
+    "GROUP BY  ?id ?candi  ?jenis   ?lokasi ?gambarr ");
 
     var headers = new Map<String, String>();
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -55,7 +85,7 @@ class _CandiNonKeagamaan extends State {
       var head = SparqlResult.fromJson(value);
       for (var data in head.results.listTriples) {
         print(data);
-        Tripleset tp = Tripleset(data.id,data.candi,data.lokasi,data.gambar,data.jenis,data.deskripsi,data.arca,data.upacara);
+        Tripleset tp = Tripleset(data.id,data.candi,data.lokasi,data.gambar,data.jenis,data.deskripsi,data.arca,data.upacara,data.relief,data.struktur_bangunan,data.bahan,data.namaLain);
         //print(data);
         jokes.add(tp);
       }
@@ -108,33 +138,36 @@ class _CandiNonKeagamaan extends State {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new ClipRRect(
-                                child: new Image.network(
-                                  // "assets/images/borobudur.jpg",
-                                    "snapshot.data[index].gambar.value"
+                                child: new Image.asset(
+                                   "assets/images/borobudur.jpg",
+                                  //  "https://candi.alunalun.info/img/CandiAngin1.jpg"
                                 ),
                                 borderRadius: BorderRadius.only(
                                   topLeft: new Radius.circular(16.0),
                                   topRight: new Radius.circular(16.0),
                                 ),
                               ),
-                              new Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  new IconButton(
-                                    icon: new Icon(FontAwesomeIcons.angleRight),
-                                    onPressed: () {
-                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(candi: snapshot.data[index].candi.value,
-                                          jenis: snapshot.data[index].jenis.value,
-                                          lokasi : snapshot.data[index].lokasi.value,
-                                          deskripsi: snapshot.data[index].deskripsi.value,
-                                          arca: snapshot.data[index].arca.value,
-                                          upacara: snapshot.data[index].upacara.value,
-                                        //    type:snapshot.data[index].candi.type
-                                      )));
-                                    },
-                                  )
-                                ],
-                              ),
+                              // new Row(
+                              //   mainAxisAlignment: MainAxisAlignment.end,
+                              //   children: <Widget>[
+                              //     new IconButton(
+                              //       icon: new Icon(FontAwesomeIcons.angleRight),
+                              //       onPressed: () {
+                              //         Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(candi: snapshot.data[index].candi.value,
+                              //             jenis: snapshot.data[index].jenis.value,
+                              //             lokasi : snapshot.data[index].lokasi.value,
+                              //             deskripsi: snapshot.data[index].deskripsi.value,
+                              //             arca: snapshot.data[index].arca.value,
+                              //             upacara: snapshot.data[index].upacara.value,
+                              //            relief: snapshot.data[index].relief.value,
+                              //             sturktur_bangunan: snapshot.data[index].struktur_bangunan.value,
+                              //           bahan: snapshot.data[index].bahan.value,
+                              //             namaLain:snapshot.data[index].namaLain.value
+                              //         )));
+                              //       },
+                              //     )
+                              //   ],
+                              // ),
                               new Padding(
                                 padding: new EdgeInsets.all(16.0),
                                 child: new Column(
@@ -143,6 +176,21 @@ class _CandiNonKeagamaan extends State {
                                   children: <Widget>[
                                     new Text(snapshot.data[index].candi.value,
                                       style: new TextStyle(fontWeight: FontWeight.bold),),
+                                new IconButton(
+                                  icon: new Icon(FontAwesomeIcons.angleRight),
+                                  onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(candi: snapshot.data[index].candi.value,
+                                      jenis: snapshot.data[index].jenis.value,
+                                      lokasi : snapshot.data[index].lokasi.value,
+                                      deskripsi: snapshot.data[index].deskripsi.value,
+                                      arca: snapshot.data[index].arca.value,
+                                      upacara: snapshot.data[index].upacara.value,
+                                      relief: snapshot.data[index].relief.value,
+                                      sturktur_bangunan: snapshot.data[index].struktur_bangunan.value,
+                                      bahan: snapshot.data[index].bahan.value,
+                                      namaLain:snapshot.data[index].namaLain.value
+                                  )));
+                                },),
                                     new SizedBox(height: 16.0),
                                     new Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/material/dropdown.dart';
 
-class SideBar extends StatelessWidget {
-  const SideBar({Key key}) : super(key: key);
+class SideBar extends StatefulWidget {
+  _SideBar createState() => _SideBar();
+}
+
+class _SideBar extends State<SideBar>{
+
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +18,7 @@ class SideBar extends StatelessWidget {
               DrawerHeader(
                 decoration: BoxDecoration(color: Colors.blueGrey.shade700),
                 child: Padding(
-                  padding: EdgeInsets.all(6),
+                  padding: EdgeInsets.all(7),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -50,11 +55,12 @@ class SideBar extends StatelessWidget {
               ListTile(
                 title: Text('Candi Keagamaan'),
 
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  'CandiKeagamaan',
-                ),
+                // onTap: () => Navigator.pushNamed(
+                //   context,
+                //   'CandiKeagamaan',
+                // ),
               ),
+
               ListTile(
                 title: Text('Candi Non Keagamaan'),
 
@@ -101,6 +107,14 @@ class SideBar extends StatelessWidget {
                 onTap: () => Navigator.pushNamed(
                   context,
                   'About',
+                ),
+              ),
+              ListTile(
+                title: Text('search'),
+
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  'HalamanUtama',
                 ),
               ),
 

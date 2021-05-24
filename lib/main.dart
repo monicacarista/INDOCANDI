@@ -54,6 +54,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
   List<Tripleset> _search = [];
 
 
+
   List<Widget> list = [
     CandiNonKeagamaan(),
     CandiKerajaan(),

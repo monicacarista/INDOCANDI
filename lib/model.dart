@@ -54,8 +54,12 @@ class Tripleset {
   final TypeValue deskripsi;
   final TypeValue arca;
     final TypeValue upacara;
+    final TypeValue relief;
+    final TypeValue struktur_bangunan;
+    final TypeValue bahan;
+    final TypeValue namaLain;
 
-  Tripleset(this.id, this.candi, this.lokasi, this.gambar, this.jenis, this.deskripsi,this.arca,this.upacara);
+  Tripleset(this.id, this.candi, this.lokasi, this.gambar, this.jenis, this.deskripsi,this.arca,this.upacara,this.relief,this.struktur_bangunan,this.bahan,this.namaLain);
 
   factory Tripleset.fromJson(Map json) {
     return Tripleset(
@@ -66,12 +70,17 @@ class Tripleset {
       TypeValue.fromJson(json['jenis']),
          TypeValue.fromJson(json['deskripsi']),
         TypeValue.fromJson(json['arca']),
-        TypeValue.fromJson(json['upacara'])
+        TypeValue.fromJson(json['upacara']),
+      TypeValue.fromJson(json['relief']),
+      TypeValue.fromJson(json['struktur_bangunan']),
+      TypeValue.fromJson(json['bahan']),
+      TypeValue.fromJson(json['namaLain']),
+
     );
   }
 
   String toString() {
-    String s = "${id}\t\t${candi}\t\t${lokasi}\t\t${gambar}\t\t${jenis}\t\t${deskripsi}\t\t${arca}\t\t${upacara}";
+    String s = "${id}\t\t${candi}\t\t${lokasi}\t\t${gambar}\t\t${jenis}\t\t${deskripsi}\t\t${arca}\t\t${upacara}\t\t${relief}\t\t${struktur_bangunan}\t\t${bahan}\t\t${namaLain}";
     return s;
   }
 }

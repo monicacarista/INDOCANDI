@@ -17,11 +17,15 @@ class DetailPage extends StatefulWidget {
   final String deskripsi;
   final String arca;
   final String upacara;
-   DetailPage({Key key, @required this.candi, @required this.jenis, @required this.lokasi,@required this.deskripsi, @required this.arca, @required this.upacara}) : super(key :key);
+  final String relief;
+  final String sturktur_bangunan;
+  final String bahan;
+  final String namaLain;
+   DetailPage({Key key, @required this.candi, @required this.jenis, @required this.lokasi,@required this.deskripsi, @required this.arca, @required this.upacara, @required this.relief,@required this.sturktur_bangunan,@required this.bahan,@required this.namaLain}) : super(key :key);
 
 
   @override
-  _DetailPageState createState() => new _DetailPageState(candi,jenis,lokasi, deskripsi,arca,upacara);
+  _DetailPageState createState() => new _DetailPageState(candi,jenis,lokasi, deskripsi,arca,upacara,relief, sturktur_bangunan,bahan,namaLain);
 }
 
 class _DetailPageState extends State<DetailPage> {
@@ -31,7 +35,11 @@ class _DetailPageState extends State<DetailPage> {
   String lokasi;
   String deskripsi;
   String upacara;
-_DetailPageState(this.candi, this.jenis, this.lokasi,this.deskripsi,this.arca, this.upacara);
+  String relief;
+  String sturktur_bangunan;
+  String bahan;
+  String namaLain;
+_DetailPageState(this.candi, this.jenis, this.lokasi,this.deskripsi,this.arca, this.upacara,this.relief, this.sturktur_bangunan,this.bahan,this.namaLain);
 
   List<Tripleset> jokes = [];
  // Map value;
@@ -88,6 +96,14 @@ _DetailPageState(this.candi, this.jenis, this.lokasi,this.deskripsi,this.arca, t
                           new Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
+                              new Text("Nama Lain :"),
+                              new Text(namaLain),
+                            ],
+                          ),
+                          new SizedBox(height: 15.0),
+                          new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
                               new Text("Asal :"),
                               new Text(lokasi),
                             ],
@@ -107,6 +123,30 @@ _DetailPageState(this.candi, this.jenis, this.lokasi,this.deskripsi,this.arca, t
                             children: <Widget>[
                               new Text("Arca :"),
                               new Text(arca),
+                            ],
+                          ),
+                           new SizedBox(height: 12.0),
+                           new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              new Text("Relief :"),
+                              new Text(relief),
+                            ],
+                          ),
+                          new SizedBox(height: 12.0),
+                          new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              new Text("Strukur Bangunan :"),
+                              new Text(sturktur_bangunan),
+                            ],
+                          ),
+                          new SizedBox(height: 12.0),
+                          new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              new Text("Bahan Bangunan :"),
+                              new Text(bahan),
                             ],
                           ),
                           new SizedBox(height: 12.0),

@@ -49,7 +49,7 @@ class _CandiHindu extends State {
       var head = SparqlResult.fromJson(value);
       for (var data in head.results.listTriples) {
         print(data);
-        Tripleset tp = Tripleset(data.id,data.candi,data.lokasi,data.gambar,data.jenis,data.deskripsi,data.arca,data.upacara);
+        Tripleset tp = Tripleset(data.id,data.candi,data.lokasi,data.gambar,data.jenis,data.deskripsi,data.arca,data.upacara,data.relief,data.struktur_bangunan,data.bahan,data.namaLain);
         //print(data);
         jokes.add(tp);
       }
