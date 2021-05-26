@@ -21,15 +21,8 @@ class CandiNonKeagamaan extends StatefulWidget{
 class _CandiNonKeagamaan extends State {
 
   List<Tripleset> jokes = [];
-  List<Tripleset> _search = [];
 
-  TextEditingController controller = new TextEditingController();
 
-  //jokes.clear();
-  // onSearch(String text) async{
-  //   _search.clear();
-  //   if(text.isEmpty(){});
-  // }
   Future<List<Tripleset>> mainNon() async {
     var payload = Uri.encodeComponent("prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
       "  prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>"+
@@ -38,7 +31,7 @@ class _CandiNonKeagamaan extends State {
         "PREFIX dbo: <http://dbpedia.org/ontology/>"+
         "SELECT  ?id ?candi  ?jenis  ?lokasi "+
         "(GROUP_CONCAT(COALESCE(?arcas,''); separator = '' )as ?arca)"+
-        "(COALESCE (?gambarr, '') as ?gambar)"+
+        "(COALESCE(?gmbr,'') as ?gambar)"+
   "  (GROUP_CONCAT(COALESCE(?acara,''); separator = '' )as ?upacara)"+
         "(GROUP_CONCAT(COALESCE(?relieff,''); separator = '' )as ?relief)"+
         "(GROUP_CONCAT(COALESCE(?sb,''); separator = '' )as ?struktur_bangunan)"+
@@ -49,7 +42,7 @@ class _CandiNonKeagamaan extends State {
    " ?id rdf:type :CandiNonKeagamaan ."+
      "   :CandiNonKeagamaan rdfs:label ?jenis."+
  "   ?id rdfs:label ?candi."+
-   " OPTIONAL{?id :profil ?gambarr.}"+
+
   "  OPTIONAL{?id :berasalDari ?idasal."+
   "  ?idasal dbo:location ?asall. }"+
     "OPTIONAL{?id :Deskripsi ?desc.}"+
@@ -63,10 +56,11 @@ class _CandiNonKeagamaan extends State {
         "?idrelief rdfs:label ?relieff}"+
         "OPTIONAL {?id :terdiriDari ?idsb."+
         "?idsb rdfs:label ?sb}"+
+        "OPTIONAL {?id :linkGambar2 ?gmbr}"+
         "OPTIONAL {?id :tersusunDari ?idbahan."+
         "?idbahan rdfs:label ?bahann.}"+
   "  OPTIONAL{?id :terdapatArca ?idarca. ?idarca rdfs:label ?arcas}}"+
-    "GROUP BY  ?id ?candi  ?jenis   ?lokasi ?gambarr ");
+    "GROUP BY  ?id ?candi  ?jenis   ?lokasi ?gmbr");
 
     var headers = new Map<String, String>();
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -96,6 +90,8 @@ class _CandiNonKeagamaan extends State {
     }
 
   }
+
+
 
   @override
   void initState() {
@@ -138,9 +134,9 @@ class _CandiNonKeagamaan extends State {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new ClipRRect(
-                                child: new Image.asset(
-                                   "assets/images/borobudur.jpg",
-                                  //  "https://candi.alunalun.info/img/CandiAngin1.jpg"
+                                child: new Image.network(
+                                  // "assets/images/borobudur.jpg",
+                                   'snapshot.data[index].gambar.value',
                                 ),
                                 borderRadius: BorderRadius.only(
                                   topLeft: new Radius.circular(16.0),

@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_tes/model.dart';
+
+import 'package:flutter_tes/detailPage.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -44,12 +47,10 @@ class _HomeState extends State<HalamanUtama> {
         "prefix : <http://alunalun.info/ontology/candi#>"+
         "prefix schema: <http://schema.org/>"+
         "PREFIX dbo: <http://dbpedia.org/ontology/>"+
-        "SELECT  ?candi"+
-          "(SAMPLE(?namaJenis) AS ?jenis)"+
-          "(SAMPLE(?namaLokasi) AS ?lokasi)"+
-          "(SAMPLE(?namaid) AS ?id) "+
+        "SELECT  ?id ?candi ?lokasi "+
         "(GROUP_CONCAT(COALESCE(?arcas,''); separator = '' )as ?arca)"+
-        "(GROUP_CONCAT(COALESCE(?gambarr,''); separator = '' )as ?gambar)"+
+        "(COALESCE (?gambarr, '') as ?gambar)"+
+        "(GROUP_CONCAT(?jeniss; separator = ',' )as ?jenis)"
         "  (GROUP_CONCAT(COALESCE(?acara,''); separator = '' )as ?upacara)"+
         "(GROUP_CONCAT(COALESCE(?relieff,''); separator = '' )as ?relief)"+
         "(GROUP_CONCAT(COALESCE(?sb,''); separator = '' )as ?struktur_bangunan)"+
@@ -57,27 +58,27 @@ class _HomeState extends State<HalamanUtama> {
         " (GROUP_CONCAT(COALESCE(?bahann,''); separator = '' )as ?bahan)"+
         "(GROUP_CONCAT(COALESCE(?desc,''); separator = '' )as ?deskripsi)"+
         "  WHERE {"+
-       " ?ids rdf:type	?idtype."+
-       " ?idtype rdfs:label	?namaJenis."+
-        "   ?ids rdfs:label ?candi."+
-        " OPTIONAL{?ids :profil ?gambarr.}"+
-        "  OPTIONAL{?ids :berasalDari ?idasal."+
+        " ?id rdf:type	?idtype."+
+        " ?idtype rdfs:label	?jeniss."+
+        "   ?id rdfs:label ?candi."+
+        " OPTIONAL{?id :profil ?gambarr.}"+
+        "  OPTIONAL{?id :berasalDari ?idasal."+
         "  ?idasal dbo:location ?asall. }"+
-        "OPTIONAL{?ids :Deskripsi ?desc.}"+
-        "?ids :berasalDari ?idasal."+
-        "?idasal dbo:location ?namaLokasi. "+
-        " OPTIONAL{?ids :untukUpacara ?idu."+
+        "OPTIONAL{?id :Deskripsi ?desc.}"+
+        "?id :berasalDari ?idasal."+
+        "?idasal dbo:location ?lokasi. "+
+        " OPTIONAL{?id :untukUpacara ?idu."+
         "  ?idu rdfs:label ?acara}"+
-        "  OPTIONAL {?ids :namaLainDari ?ida."+
-        "?ida rdfs:label ?nama}"+
-        "OPTIONAL {?ids :terdapatRelief ?idrelief."+
+        "  OPTIONAL {?id :namaLainDari ?id."+
+        "?id rdfs:label ?nama}"+
+        "OPTIONAL {?id :terdapatRelief ?idrelief."+
         "?idrelief rdfs:label ?relieff}"+
-        "OPTIONAL {?ids :terdiriDari ?idsb."+
+        "OPTIONAL {?id :terdiriDari ?idsb."+
         "?idsb rdfs:label ?sb}"+
-        "OPTIONAL {?ids :tersusunDari ?idbahan."+
+        "OPTIONAL {?id :tersusunDari ?idbahan."+
         "?idbahan rdfs:label ?bahann.}"+
-        "  OPTIONAL{?ids :terdapatArca ?idarca. ?idarca rdfs:label ?arcas}}"+
-        "GROUP BY  ?candi   ");
+        "  OPTIONAL{?id :terdapatArca ?idarca. ?idarca rdfs:label ?arcas}}"+
+        "GROUP BY  ?id ?candi  ?jenis   ?lokasi ?gambarr ?jenis");
 
 
     var headers = new Map<String, String>();
@@ -93,7 +94,7 @@ class _HomeState extends State<HalamanUtama> {
 
     if (response.statusCode == 200) {
       Map value = json.decode(response.body);
-      print(value);
+     // print(value);
       var head = SparqlResult.fromJson(value);
       for (var data in head.results.listTriples) {
         print(data);
@@ -101,7 +102,7 @@ class _HomeState extends State<HalamanUtama> {
         //print(data);
         jokes.add(tp);
       }
-      print(jokes);
+     // print(jokes);
       return jokes;
     }else{
 
@@ -170,8 +171,8 @@ class _HomeState extends State<HalamanUtama> {
               child: _search.length != 0 || controller.text.isNotEmpty
                   ? ListView.builder(
                 itemCount: _search.length,
-                itemBuilder: (context, i) {
-                  final b = _search[i];
+                itemBuilder: (context, index) {
+                  final b = _search[index];
                   return Container(
                       padding: EdgeInsets.all(10.0),
                       child: Column(
@@ -184,10 +185,30 @@ class _HomeState extends State<HalamanUtama> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18.0),
                           ),
+
+                          new IconButton(
+                            icon: new Icon(FontAwesomeIcons.angleRight),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(
+
+                                candi: b.jenis.value,
+                                  jenis: b.jenis.value,
+                                  lokasi : b.lokasi.value,
+                                  deskripsi: b.deskripsi.value,
+                                  arca: b.arca.value,
+                                  upacara: b.upacara.value,
+                                  relief: b.relief.value,
+                                  sturktur_bangunan: b.struktur_bangunan.value,
+                                  bahan: b.bahan.value,
+                                  namaLain:b.namaLain.value,
+                              )));
+                            },
+                          ),
                           SizedBox(
                             height: 4.0,
                           ),
                           Text(b.jenis.value),
+
                         ],
                       ));
                 },
