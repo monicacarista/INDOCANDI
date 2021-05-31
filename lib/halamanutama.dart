@@ -23,23 +23,6 @@ class _HomeState extends State<HalamanUtama> {
   List<Tripleset> jokes = [];
   List<Tripleset> _search = [];
   var loading = false;
-  // Future<Null> fetchData() async {
-  //   setState(() {
-  //     loading = true;
-  //   });
-  //   _list.clear();
-  //   final response =
-  //   await http.get("https://jsonplaceholder.typicode.com/posts");
-  //   if (response.statusCode == 200) {
-  //     final data = jsonDecode(response.body);
-  //     setState(() {
-  //       for (Map i in data) {
-  //         _list.add(Posts.formJson(i));
-  //         loading = false;
-  //       }
-  //     });
-  //   }
-  // }
 
   Future<List<Tripleset>> mainSearch() async {
     var payload = Uri.encodeComponent("prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
@@ -137,7 +120,7 @@ class _HomeState extends State<HalamanUtama> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+
       body: Container(
         child: Column(
           children: <Widget>[
@@ -244,3 +227,4 @@ class _HomeState extends State<HalamanUtama> {
     );
   }
 }
+
