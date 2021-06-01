@@ -122,108 +122,11 @@ class _HomeState extends State<HalamanUtama> {
     return Scaffold(
 
       body: Container(
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(10.0),
-              color: Colors.blue,
-              child: Card(
-                child: ListTile(
-                  leading: Icon(Icons.search),
-                  title: TextField(
-                    controller: controller,
-                    onChanged: onSearch,
-                    decoration: InputDecoration(
-                        hintText: "Search", border: InputBorder.none),
-                  ),
-                  trailing: IconButton(
-                    onPressed: () {
-                      controller.clear();
-                      onSearch('');
-                    },
-                    icon: Icon(Icons.cancel),
-                  ),
-                ),
-              ),
-            ),
-            loading
-                ? Center(
-              child: CircularProgressIndicator(),
-            )
-                : Expanded(
-              child: _search.length != 0 || controller.text.isNotEmpty
-                  ? ListView.builder(
-                itemCount: _search.length,
-                itemBuilder: (context, index) {
-                  final b = _search[index];
-                  return Container(
-                      padding: EdgeInsets.all(10.0),
-                      child: Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            b.candi.value,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0),
-                          ),
-
-                          new IconButton(
-                            icon: new Icon(FontAwesomeIcons.angleRight),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(
-
-                                candi: b.jenis.value,
-                                  jenis: b.jenis.value,
-                                  lokasi : b.lokasi.value,
-                                  deskripsi: b.deskripsi.value,
-                                  arca: b.arca.value,
-                                  upacara: b.upacara.value,
-                                  relief: b.relief.value,
-                                  sturktur_bangunan: b.struktur_bangunan.value,
-                                  bahan: b.bahan.value,
-                                  namaLain:b.namaLain.value,
-                              )));
-                            },
-                          ),
-                          SizedBox(
-                            height: 4.0,
-                          ),
-                          Text(b.jenis.value),
-
-                        ],
-                      ));
-                },
-              )
-                  : ListView.builder(
-                itemCount: jokes.length,
-                itemBuilder: (context, i) {
-                  final a = jokes[i];
-                  return Container(
-                      padding: EdgeInsets.all(10.0),
-                      child: Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            a.candi.value,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0),
-                          ),
-                          SizedBox(
-                            height: 4.0,
-                          ),
-                          Text(a.jenis.value),
-                        ],
-                      ));
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+          // child: WebView(
+          //   initialUrl: Uri.dataFromString('<html><body><iframe src="https://www.youtube.com/embed/abc"></iframe></body></html>', mimeType: 'text/html').toString(),
+          //   javascriptMode: JavascriptMode.unrestricted,
+          // )
+    ),
     );
   }
 }

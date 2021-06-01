@@ -26,7 +26,7 @@ class _CandiNonKeagamaan extends State {
             "prefix : <http://alunalun.info/ontology/candi#>" +
             "prefix schema: <http://schema.org/>" +
             "PREFIX dbo: <http://dbpedia.org/ontology/>" +
-            "SELECT  ?id ?candi  ?jenis  ?lokasi " +
+            "SELECT  ?id ?candi  ?jenis  ?lokasi  " +
             "(GROUP_CONCAT(COALESCE(?arcas,''); separator = '' )as ?arca)" +
             "(COALESCE(?gmbr,'') as ?gambar)" +
             "  (GROUP_CONCAT(COALESCE(?acara,''); separator = '' )as ?upacara)" +
@@ -94,7 +94,7 @@ class _CandiNonKeagamaan extends State {
       return jokes;
     } else {}
   }
-
+//var gam = "https://asset.kompas.com/crops/YZGoSq4D-3SOvY6X4ie7lWA5RwY=/0x0:700x467/750x500/data/photo/2021/04/08/606eb2725991f.jpg";
   @override
   void initState() {
     super.initState();
@@ -119,47 +119,50 @@ class _CandiNonKeagamaan extends State {
               return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return new Card(
-                      elevation: 2.0,
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(16.0),
-                      ),
-                      child: new InkWell(
-                        child: new Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new ClipRRect(
-                              child: new Image.network(
-                                // "assets/images/borobudur.jpg",
-                                snapshot.data[index].gambar.value ?? 'https://via.placeholder.com/400x200',
+                    if(snapshot.data[index].gambar.value != "")
+                    {
+                      return new Card(
+                        elevation: 2.0,
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(16.0),
+                        ),
+                        child: new InkWell(
+                          child: new Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new ClipRRect(
+                                child: new Image.network(
+                                  // "assets/images/borobudur.jpg",
+                                  snapshot.data[index].gambar.value ?? 'https://via.placeholder.com/400x200',
+                                ),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: new Radius.circular(16.0),
+                                  topRight: new Radius.circular(16.0),
+                                ),
                               ),
-                              borderRadius: BorderRadius.only(
-                                topLeft: new Radius.circular(16.0),
-                                topRight: new Radius.circular(16.0),
-                              ),
-                            ),
-                            new Padding(
-                                padding: new EdgeInsets.all(16.0),
-                                child: new Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      new ListTile(
-                                        title: Text(
-                                          snapshot.data[index].candi.value,
-                                          style: new TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        trailing: new IconButton(
-                                          icon: new Icon(
-                                              FontAwesomeIcons.angleRight),
-                                          onPressed: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder:
-                                                        (context) => new DetailPage(
+                              new Padding(
+                                  padding: new EdgeInsets.all(16.0),
+                                  child: new Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        new ListTile(
+                                          title: Text(
+                                            snapshot.data[index].candi.value,
+                                            style: new TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          trailing: new IconButton(
+                                            icon: new Icon(
+                                                FontAwesomeIcons.angleRight),
+                                            onPressed: () {
+
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder:
+                                                            (context) => new DetailPage(
                                                             candi: snapshot
                                                                 .data[index]
                                                                 .candi
@@ -193,10 +196,10 @@ class _CandiNonKeagamaan extends State {
                                                                 .relief
                                                                 .value,
                                                             sturktur_bangunan:
-                                                                snapshot
-                                                                    .data[index]
-                                                                    .struktur_bangunan
-                                                                    .value,
+                                                            snapshot
+                                                                .data[index]
+                                                                .struktur_bangunan
+                                                                .value,
                                                             bahan: snapshot
                                                                 .data[index]
                                                                 .bahan
@@ -205,6 +208,170 @@ class _CandiNonKeagamaan extends State {
                                                                 .data[index]
                                                                 .namaLain
                                                                 .value)));
+                                            },
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: new EdgeInsets.all(13.0),
+                                          child: new Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              new Text(snapshot
+                                                  .data[index].jenis.value),
+                                              new Text(snapshot
+                                                  .data[index].lokasi.value),
+                                            ],
+                                          ),
+                                        )
+                                      ])),
+                            ],
+                          ),
+
+                          // onTap: () {
+                          //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(data: this.data)));
+                          // },
+                        ),
+                      );
+                      return Text("ada");
+
+                    }
+                    else{return new Card(
+                      elevation: 2.0,
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(16.0),
+                      ),
+                      child: new InkWell(
+                        child: new Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            new ClipRRect(
+                              child: new Image.asset(
+                                 "assets/images/main.jpg",
+                                //snapshot.data[index].gambar.value ?? 'https://via.placeholder.com/400x200',
+                              ),
+                              borderRadius: BorderRadius.only(
+                                topLeft: new Radius.circular(16.0),
+                                topRight: new Radius.circular(16.0),
+                              ),
+                            ),
+                            new Padding(
+                                padding: new EdgeInsets.all(16.0),
+                                child: new Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      new ListTile(
+                                        title: Text(
+                                          snapshot.data[index].candi.value,
+                                          style: new TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        trailing: new IconButton(
+                                          icon: new Icon(
+                                              FontAwesomeIcons.angleRight),
+                                          onPressed: () {
+                                            if(snapshot.data[index].gambar.value != ""){
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (context) => new DetailPage(
+                                                          candi: snapshot
+                                                              .data[index]
+                                                              .candi
+                                                              .value,
+                                                          jenis: snapshot
+                                                              .data[index]
+                                                              .jenis
+                                                              .value,
+                                                          lokasi: snapshot
+                                                              .data[index]
+                                                              .lokasi
+                                                              .value,
+                                                          deskripsi: snapshot
+                                                              .data[index]
+                                                              .deskripsi
+                                                              .value,
+                                                          gambar : snapshot
+                                                              .data[index]
+                                                              .gambar
+                                                              .value,
+                                                          arca: snapshot
+                                                              .data[index]
+                                                              .arca
+                                                              .value,
+                                                          upacara: snapshot
+                                                              .data[index]
+                                                              .upacara
+                                                              .value,
+                                                          relief: snapshot
+                                                              .data[index]
+                                                              .relief
+                                                              .value,
+                                                          sturktur_bangunan:
+                                                          snapshot
+                                                              .data[index]
+                                                              .struktur_bangunan
+                                                              .value,
+                                                          bahan: snapshot
+                                                              .data[index]
+                                                              .bahan
+                                                              .value,
+                                                          namaLain: snapshot
+                                                              .data[index]
+                                                              .namaLain
+                                                              .value)));
+                                            }else{
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (context) => new DetailPage(
+                                                          candi: snapshot
+                                                              .data[index]
+                                                              .candi
+                                                              .value,
+                                                          jenis: snapshot
+                                                              .data[index]
+                                                              .jenis
+                                                              .value,
+                                                          lokasi: snapshot
+                                                              .data[index]
+                                                              .lokasi
+                                                              .value,
+                                                          deskripsi: snapshot
+                                                              .data[index]
+                                                              .deskripsi
+                                                              .value,
+                                                          gambar : snapshot.data[0].gambar.value,
+                                                          arca: snapshot
+                                                              .data[index]
+                                                              .arca
+                                                              .value,
+                                                          upacara: snapshot
+                                                              .data[index]
+                                                              .upacara
+                                                              .value,
+                                                          relief: snapshot
+                                                              .data[index]
+                                                              .relief
+                                                              .value,
+                                                          sturktur_bangunan:
+                                                          snapshot
+                                                              .data[index]
+                                                              .struktur_bangunan
+                                                              .value,
+                                                          bahan: snapshot
+                                                              .data[index]
+                                                              .bahan
+                                                              .value,
+                                                          namaLain: snapshot
+                                                              .data[index]
+                                                              .namaLain
+                                                              .value)));
+                                            }
+
                                           },
                                         ),
                                       ),
@@ -212,7 +379,7 @@ class _CandiNonKeagamaan extends State {
                                         padding: new EdgeInsets.all(13.0),
                                         child: new Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
                                             new Text(snapshot
                                                 .data[index].jenis.value),
@@ -229,7 +396,8 @@ class _CandiNonKeagamaan extends State {
                         //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => new DetailPage(data: this.data)));
                         // },
                       ),
-                    );
+                    );}
+
                   });
             }
           },
